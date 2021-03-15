@@ -41,12 +41,15 @@ function App() {
     }
   }
 
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const gprovider = new firebase.auth.GoogleAuthProvider();
   const fbProvider = new firebase.auth.FacebookAuthProvider();
+  const twProvider = new firebase.auth.TwitterAuthProvider();
 
-  const handleGoogleSignIn = () => {
+
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
     firebase.auth()
-      .signInWithPopup(provider)
+      .signInWithPopup(gprovider)
       .then((result) => {
         setUser(result.user)
         // console.log(result.user)
@@ -56,7 +59,8 @@ function App() {
       });
   }
 
-  const handleFbSingIn = () => {
+  const handleFbSingIn = (e) => {
+    e.preventDefault();
     firebase
       .auth()
       .signInWithPopup(fbProvider)
@@ -68,6 +72,19 @@ function App() {
       .catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage)
+        setError(errorMessage)
+      });
+  }
+
+  const handletwSingIn = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signInWithPopup(twProvider)
+      .then((result) => {
+        setUser(result.user)
+      }).catch((error) => {
+        var errorMessage = error.message;
         setError(errorMessage)
       });
   }
@@ -149,7 +166,8 @@ function App() {
                   }
                   <h3 className='text-danger text-center'>Or</h3>
                   <button type="submit" onClick={handleGoogleSignIn} className="btn btn-success my-1">Sing In With Google</button>
-                  <button type="submit" onClick={handleFbSingIn} className="btn btn-primary">Sing In Facebook</button>
+                  <button type="submit" onClick={handleFbSingIn} className="btn btn-primary my-1">Sing In With Facebook</button>
+                  <button type="submit" onClick={handletwSingIn} className="btn btn-warning my-1">Sing In With Twitter</button>
                 </div>
               </form>
             </div>
