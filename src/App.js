@@ -16,7 +16,6 @@ if (!firebase.apps.length) {
 function App() {
   const [option, setOption] = useState('register');
   const [error, setError] = useState('')
-  console.log(option)
   const [formData, setFormData] = useState({ email: null, password: null });
   const [user, setUser] = useState();
 
@@ -45,46 +44,13 @@ function App() {
   const fbProvider = new firebase.auth.FacebookAuthProvider();
   const twProvider = new firebase.auth.TwitterAuthProvider();
 
-
-  const handleGoogleSignIn = (e) => {
-    e.preventDefault();
+  const handleSingIn = (provider) => {
     firebase.auth()
-      .signInWithPopup(gprovider)
-      .then((result) => {
-        setUser(result.user)
-        // console.log(result.user)
-      }).catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage)
-      });
-  }
-
-  const handleFbSingIn = (e) => {
-    e.preventDefault();
-    firebase
-      .auth()
-      .signInWithPopup(fbProvider)
-      .then((result) => {
-        const userFb = result.user;
-        // console.log('fb user', userFb)
-        setUser(userFb)
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage)
-        setError(errorMessage)
-      });
-  }
-
-  const handletwSingIn = (e) => {
-    e.preventDefault();
-    firebase
-      .auth()
-      .signInWithPopup(twProvider)
+      .signInWithPopup(provider)
       .then((result) => {
         setUser(result.user)
       }).catch((error) => {
-        var errorMessage = error.message;
+        const errorMessage = error.message;
         setError(errorMessage)
       });
   }
@@ -93,17 +59,15 @@ function App() {
     e.preventDefault();
     firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
       .then((userCredential) => {
-        // Signed in 
         const user = userCredential.user;
         console.log(user);
         setUser(user)
       })
       .catch((error) => {
-        // const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
         setError(errorMessage)
-        // ..
+       
       });
   }
 
@@ -113,14 +77,11 @@ function App() {
 
     firebase.auth().signInWithEmailAndPassword(formData.email, formData.password)
       .then((userCredential) => {
-        // Signed in
         var user = userCredential.user;
         setUser(user)
         console.log("success", user);
-        // ...
       })
       .catch((error) => {
-        // var errorCode = error.code;
         var errorMessage = error.message;
         console.log("error", errorMessage);
         setError(errorMessage)
@@ -164,12 +125,12 @@ function App() {
                       :
                       <button type="submit" onClick={signIn} className="btn btn-danger">Login</button>
                   }
-                  <h3 className='text-danger text-center'>Or</h3>
-                  <button type="submit" onClick={handleGoogleSignIn} className="btn btn-success my-1">Sing In With Google</button>
-                  <button type="submit" onClick={handleFbSingIn} className="btn btn-primary my-1">Sing In With Facebook</button>
-                  <button type="submit" onClick={handletwSingIn} className="btn btn-warning my-1">Sing In With Twitter</button>
                 </div>
               </form>
+              <h3 className='text-danger text-center'>Or</h3>
+              <button type="submit" onClick={() => handleSingIn(gprovider)} className="btn btn-success my-1 w-100">Sing In With Google</button>
+              <button type="submit" onClick={() => handleSingIn(fbProvider)} className="btn btn-primary my-1 w-100">Sing In With Facebook</button>
+              <button type="submit" onClick={() => handleSingIn(twProvider)} className="btn btn-warning my-1 w-100">Sing In With Twitter</button>
             </div>
           </>
         }

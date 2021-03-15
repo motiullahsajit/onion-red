@@ -26,7 +26,7 @@ const MealFInder = (props) => {
     return (
         <div className='bg-dark p-3'>
             <button className='float-end btn btn-warning text-white' onClick={()=>setUser(!user)}>Sing Out</button>
-            <h1 className='text-center text-warning py-4'>Welcome {user.email} Find Your Fav Foods</h1>
+            <h1 className='text-center text-warning py-4'>Welcome {user.email.substring(0, user.email.indexOf("@"))} Find Your Fav Foods</h1>
             <div className="d-flex justify-content-between p-4 px-5 container">
                 <input type="text" className='w-75' onChange={handleChange} placeholder='Search for meals...' />
                 {
