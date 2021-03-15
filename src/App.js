@@ -15,14 +15,30 @@ if (!firebase.apps.length) {
 
 function App() {
   const [option, setOption] = useState('register');
-
+  const [error, setError] = useState('')
   console.log(option)
   const [formData, setFormData] = useState({ email: null, password: null });
   const [user, setUser] = useState();
 
   const onChangeHandler = (e) => {
-    const key = e.target.name
-    setFormData({ ...formData, [key]: e.target.value })
+    let isFieldValid = true;
+
+    if (e.target.name === 'email') {
+      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value)
+    }
+    if (e.target.name === 'password') {
+      const isPasswordValid = e.target.value.length >= 6;
+      const passwordHasNumber = /\d{1}/.test(e.target.value);
+      isFieldValid = isPasswordValid && passwordHasNumber
+    }
+    if (isFieldValid) {
+      const key = e.target.name
+      setFormData({ ...formData, [key]: e.target.value })
+      setError('')
+    }
+    else {
+      setError('Please check your Email format or Password (password should have more then six character and a number in it)')
+    }
   }
 
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -52,6 +68,7 @@ function App() {
       .catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage)
+        setError(errorMessage)
       });
   }
 
@@ -62,12 +79,13 @@ function App() {
         // Signed in 
         const user = userCredential.user;
         console.log(user);
-        // ...
+        setUser(user)
       })
       .catch((error) => {
         // const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
+        setError(errorMessage)
         // ..
       });
   }
@@ -88,6 +106,7 @@ function App() {
         // var errorCode = error.code;
         var errorMessage = error.message;
         console.log("error", errorMessage);
+        setError(errorMessage)
       });
 
   }
@@ -98,7 +117,7 @@ function App() {
       <div className="row justify-content-center d-flex">
         {
           user &&
-          <MealFInder user={user}></MealFInder>
+          <MealFInder state={setUser} user={user}></MealFInder>
         }
         {
           !user &&
@@ -116,6 +135,7 @@ function App() {
                 <div className="mb-3">
                   <input name="password" onChange={(e) => onChangeHandler(e)} type="password" placeholder="Password" className="form-control" />
                 </div>
+                <p className='text-success text-danger'>{error}</p>
                 <div className="mb-3 form-check">
                   <input type="checkbox" className="form-check-input" />
                   <label className="form-check-label">Remember me</label>
@@ -128,8 +148,8 @@ function App() {
                       <button type="submit" onClick={signIn} className="btn btn-danger">Login</button>
                   }
                   <h3 className='text-danger text-center'>Or</h3>
-                  <button type="submit" onClick={handleGoogleSignIn} className="btn btn-success my-1">SingIn With Google</button>
-                  <button type="submit" onClick={handleFbSingIn} className="btn btn-primary">SingIn Facebook</button>
+                  <button type="submit" onClick={handleGoogleSignIn} className="btn btn-success my-1">Sing In With Google</button>
+                  <button type="submit" onClick={handleFbSingIn} className="btn btn-primary">Sing In Facebook</button>
                 </div>
               </form>
             </div>

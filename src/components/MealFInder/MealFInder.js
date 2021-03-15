@@ -3,6 +3,7 @@ import Meal from '../Meal/Meal';
 
 const MealFInder = (props) => {
     const user = props.user
+    const setUser = props.state
     const [loading, setLoading] = useState(true);
     const [search, setSerch] = useState('');
     const [meals, setMeals] = useState([]);
@@ -24,6 +25,7 @@ const MealFInder = (props) => {
 
     return (
         <div className='bg-dark p-3'>
+            <button className='float-end btn btn-warning text-white' onClick={()=>setUser(!user)}>Sing Out</button>
             <h1 className='text-center text-warning py-4'>Welcome {user.email} Find Your Fav Foods</h1>
             <div className="d-flex justify-content-between p-4 px-5 container">
                 <input type="text" className='w-75' onChange={handleChange} placeholder='Search for meals...' />
