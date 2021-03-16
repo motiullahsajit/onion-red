@@ -103,7 +103,7 @@ function App() {
             <div className="col-md-3 mt-5">
               <img src={logo} className='w-100 p-3' alt="" />
               <div className="tab bg-light p-2 rounded mb-3 row">
-                <button onClick={() => setOption('register')} className={`btn ${option === 'register' ? 'btn-danger' : 'btn-light'}  col`}>Register</button>
+                <button onClick={() => setOption('register')} className={`btn ${option === 'register' ? ' btn-danger' : 'btn-light'}  col`}>Register</button>
                 <button onClick={() => setOption('login')} className={`btn ${option === 'login' ? 'btn-danger' : 'btn-light'}  col`}>Login</button>
               </div>
               <form className="form my-4">
@@ -130,7 +130,7 @@ function App() {
               <h3 className='text-danger text-center'>Or</h3>
               <button type="submit" onClick={() => handleSingIn(gprovider)} className="btn btn-success my-1 w-100">Sing In With Google</button>
               <button type="submit" onClick={() => handleSingIn(fbProvider)} className="btn btn-primary my-1 w-100">Sing In With Facebook</button>
-              <button type="submit" onClick={() => handleSingIn(twProvider)} className="btn btn-warning my-1 w-100">Sing In With Twitter</button>
+              <button type="submit" onClick={() => handleSingIn(twProvider)} className="btn btn-warning text-white my-1 w-100">Sing In With Twitter</button>
             </div>
           </>
         }
